@@ -1,9 +1,9 @@
 import fastify from 'fastify';
-import Errors, { errors } from '../src';
+import FastifyErrors from '../src';
 
 function getConfiguredApp() {
-  const app = fastify({ logger: { prettyPrint: true } });
-  app.register(Errors);
+  const app = fastify({ logger: !{ prettyPrint: true } });
+  app.register(FastifyErrors);
   return app;
 }
 
@@ -18,7 +18,7 @@ describe('errors', () => {
       },
     });
     await app.ready();
-    const error = new errors.EnhanceYourCalm();
+    const error = new app.errors.EnhanceYourCalm();
     const res = await app.inject({ method: 'GET', url: '/' });
     expect(res.body).toEqual(error.message);
     expect(res.statusCode).toEqual(error.code);
