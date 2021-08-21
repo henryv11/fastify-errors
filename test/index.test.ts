@@ -10,15 +10,15 @@ function getConfiguredApp() {
 describe('errors', () => {
   test('response output', async () => {
     const app = getConfiguredApp();
+    const error = new app.errors.EnhanceYourCalm();
     app.route({
       method: 'GET',
       url: '/',
       handler: () => {
-        throw new app.errors.EnhanceYourCalm();
+        throw error;
       },
     });
     await app.ready();
-    const error = new app.errors.EnhanceYourCalm();
     const res = await app.inject({ method: 'GET', url: '/' });
     expect(res.body).toEqual(error.message);
     expect(res.statusCode).toEqual(error.code);
