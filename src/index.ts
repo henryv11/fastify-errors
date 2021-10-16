@@ -21,7 +21,7 @@ export default fp(
       }
     });
     app.setErrorHandler((err, req, res) => {
-      app.log.error({ err, req, res }, err.message);
+      req.log.error(err, err.message);
       if (err instanceof HttpError) {
         res.status(err.code).send(err.data || err.message);
       } else if (err.validation) {
